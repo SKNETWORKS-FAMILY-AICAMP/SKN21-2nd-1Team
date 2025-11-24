@@ -53,6 +53,8 @@ class Preprocessing:
         self.standard_scaler = StandardScaler()
         self.robust_scaler  = RobustScaler() # or MinMaxScaler, log1p 변환 후 StandardScaler - balance
         self.onehot_encoder = OneHotEncoder(sparse_output=False) # sparse=False 반환타입 : Numpy array로 받기
+        # self.gender_encoder = LabelEncoder()
+        # self.country_encoder = LabelEncoder()
         self.age_encoder    = LabelEncoder()
 
         # age_group 설정용 bins, labels 저장
@@ -75,6 +77,9 @@ class Preprocessing:
         
         # 3) OneHotEncoder 학습
         self.onehot_encoder.fit(df[self.label_cols])
+
+        # self.gender_encoder.fit(df['gender'])
+        # self.country_encoder.fit(df['country'])
 
 
     def transform(self, df):
@@ -100,6 +105,9 @@ class Preprocessing:
         ohe_array = self.onehot_encoder.transform(df[self.label_cols])
         ohe_cols  = self.onehot_encoder.get_feature_names_out(self.label_cols)
         df_ohe    = pd.DataFrame(ohe_array, columns=ohe_cols, index=df.index)
+        # df['gender'] = self.gender_encoder.transform(df['gender'])
+        # df['country'] = self.country_encoder.transform(df['country'])
+
 
         # Interaction Feature
         # Age × Active Member
@@ -122,6 +130,7 @@ class Preprocessing:
             df[self.balance_col],
             df[self.binary_cols],
             df_ohe,
+            # df[self.label_cols],
             df[["age_group", "age_x_active", "products_x_active", "age_x_products", "estimated_x_age", "estimated_x_active"]]
         ], axis=1)
 
