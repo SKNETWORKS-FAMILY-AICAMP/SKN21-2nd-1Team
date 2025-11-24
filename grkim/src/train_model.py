@@ -1,81 +1,74 @@
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.linear_model import LogisticRegression
-from xgboost import XGBClassifier
-from lightgbm import LGBMClassifier
 import pandas as pd
+import numpy as np
+import pickle
 
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
+from sklearn.metrics import confusion_matrix
 
-from train_model import MultiModelTuner
+from tuner_model import MultiModelTuner
+
+import sys
+from pathlib import Path
+# Add project root to path
+project_root = Path.cwd()  # parent of notebooks/
+sys.path.append(str(project_root))
+
+from util import utils
 
 class TrainModel:
-    def __init__(self):
-        self.models_with_params = {
-            "LogisticRegression": (
-                LogisticRegression(max_iter=3000, random_state=42),
-                {
-                    "C": [0.001, 0.01, 0.1, 1, 3, 5, 10],   # 규제 강도
-                    "penalty": ["l1", "l2", "elasticnet"],
-                    "solver": ["liblinear", "saga"],
-                    "l1_ratio": [0, 0.3, 0.5, 0.7, 1]       # elasticnet 전용
-                }
-            ),
-
-            "RandomForest": (
-                RandomForestClassifier(random_state=42),
-                {
-                    "n_estimators": [200, 300, 500],
-                    "max_depth": [4, 6, 8, 10],
-                    "min_samples_split": [2, 5, 10],
-                    "min_samples_leaf": [1, 2, 4],
-                }
-            ),
-
-            "XGBoost": (
-                XGBClassifier(eval_metric="logloss", random_state=42),
-                {
-                    "n_estimators": [200, 300, 500],
-                    "max_depth": [3, 4, 5, 6],
-                    "learning_rate": [0.01, 0.05, 0.1],
-                    "subsample": [0.6, 0.8, 1.0],
-                    "colsample_bytree": [0.6, 0.8, 1.0],
-                }
-            ),
-
-            "LightGBM": (
-                LGBMClassifier(random_state=42),
-                {
-                    "n_estimators": [200, 300, 500],
-                    "max_depth": [-1, 4, 6, 8],
-                    "learning_rate": [0.01, 0.05, 0.1],
-                    "num_leaves": [15, 31, 63],
-                    "subsample": [0.6, 0.8, 1.0],
-                }
-            )
-        }
+    def __init__(self, params):
+        self.models_with_params = params
         self.tuner = MultiModelTuner(self.models_with_params, n_iter=20)
 
-        self.df_results = []
+        self.score_results = []
+        self.train_results = []
 
-    
-    def fit_transform(self, 
-                      X_train: pd.DataFrame, y_train: pd.DataFrame,
-                      X_test: pd.DataFrame, y_test: pd.DataFrame
-                      ):
+    def __save_models(self, models):
+        save_dir = Path("./result/")
+        # 폴더 없으면 자동 생성
+        save_dir.mkdir(parents=True, exist_ok=True)
+        
+        # 저장
+        for name, model in models.items():
+            file_path = save_dir / f"{name}.pkl"
+            with open(file_path, "wb") as f:
+                pickle.dump(model, f)
+
+            print(f">>>> Saved to {file_path.resolve()}")
+
+        print(">>>> Saved Finish!!!!")
+
+
+    def fit(self, X_train: pd.DataFrame, y_train: pd.DataFrame):
+        # hyper parameter tuning
         best_models = self.tuner.tune(X_train, y_train)
         print(best_models)
-        
-        for name, model in best_models.items():            
+
+        self.__save_models(best_models)
+
+        return best_models  
+    
+    def predict(self, models, X_test, y_test, thresh):
+        train_results = []
+        score_results = []
+        print(models)
+        for name, model in models.items():            
             pred = model.predict(X_test)
             proba = model.predict_proba(X_test)[:, 1]
 
-            accuracy = accuracy_score(y_test, pred)
-            precision = precision_score(y_test, pred)
-            recall = recall_score(y_test, pred)
-            f1 = f1_score(y_test, pred)
-            auc = roc_auc_score(y_test, proba)
+            # 임계값 설정
+            pred_thresh =  np.where(proba >= thresh, 1, 0)
+            print(pred_thresh)
 
-            self.df_results.append([name, accuracy, precision, recall, f1, auc])
+            confusion = confusion_matrix(y_test, pred_thresh)
+            score_list = utils.get_score_list(y_test, pred_thresh, proba)
 
-        for result in self.df_results:
-            print(result)
+            print("혼동행렬(confusion) : \n", confusion, score_list)
+
+            score_cols = ["Name", "Accuracy", "Precision", "Recall", "F1-score", "ROC-AUC", "AP_SCORE"]
+            score_df = pd.DataFrame([[name] + score_list], columns=score_cols)
+            print("thresh : ", thresh, "\nScore DF : \n. ", score_df)
+
+            train_results.append((name, pred_thresh, proba))
+            score_results.append({name:score_df})
+
+        return (train_results, score_results)

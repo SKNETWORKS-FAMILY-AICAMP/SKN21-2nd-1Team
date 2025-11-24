@@ -1,20 +1,18 @@
 import pandas as pd
 from sklearn.preprocessing import StandardScaler, LabelEncoder, OneHotEncoder, RobustScaler
+from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
 
 import sys
 from pathlib import Path
-
 # Add project root to path
-project_root = Path.cwd().parent  # parent of notebooks/
+project_root = Path.cwd()  # parent of notebooks/
 sys.path.append(str(project_root))
 
 from src.custom_preprocessing import InteractionFeaturePreProcessing
 
-from sklearn.pipeline import Pipeline
-from sklearn.compose import ColumnTransformer
-
 # Pipeline Version =====================================
-class PipelinePreprocessing:
+class PipelinePreprocessing():
     def __init__(self):
         self.numeric_cols = ["age", "tenure", "credit_score", "estimated_salary", "products_number"]
         self.balance_col  = ["balance"] # 비 정규적인 데이터
@@ -51,7 +49,7 @@ class Preprocessing:
 
         # categorical OneHot 대상
         self.label_cols   = ["gender", "country"]
-
+        
         self.standard_scaler = StandardScaler()
         self.robust_scaler  = RobustScaler() # or MinMaxScaler, log1p 변환 후 StandardScaler - balance
         self.onehot_encoder = OneHotEncoder(sparse_output=False) # sparse=False 반환타입 : Numpy array로 받기
@@ -106,13 +104,13 @@ class Preprocessing:
         # Interaction Feature
         # Age × Active Member
         df["age_x_active"] = df["age"] * df["active_member"]
-        # Product × Active Member
+        # # Product × Active Member
         df["products_x_active"] = df["products_number"] * df["active_member"]
-        # Age × Product Number
+        # # Age × Product Number
         df["age_x_products"] = df["age"] * df["products_number"]
-        # estimated_salary × age
+        # # estimated_salary × age
         df["estimated_x_age"] = df["estimated_salary"] * df["age"]
-        # estimated_salary × active_member
+        # # estimated_salary × active_member
         df["estimated_x_active"] = df["estimated_salary"] * df["active_member"]
 
         new_numeric_cols = self.numeric_cols.copy()

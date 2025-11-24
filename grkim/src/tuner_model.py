@@ -1,4 +1,4 @@
-from sklearn.model_selection import RandomizedSearchCV
+from sklearn.model_selection import RandomizedSearchCV, GridSearchCV
 
 class MultiModelTuner:
     def __init__(self, models_with_params, scoring="roc_auc", n_iter=20):
@@ -20,6 +20,15 @@ class MultiModelTuner:
         for name, (model, param_space) in self.models_with_params.items():
             print(f"▶ Tuning {name} ...")
 
+            # search = GridSearchCV(
+            #     estimator=model,
+            #     param_grid=param_space,
+            #     cv=3,                       # 교차검증을 위한 fold 횟수
+            #     return_train_score=True,
+            #     refit=True,                 # True : 가장 최적의 하이퍼 파라미터를 찾은 뒤 입력된 estimator 객체를 해당 하이퍼 파라미터로 재학습시킨다. (Default = True)
+            #     n_jobs=-1,
+            #     scoring=self.scoring,
+            # )
             search = RandomizedSearchCV(
                 estimator=model,
                 param_distributions=param_space,
