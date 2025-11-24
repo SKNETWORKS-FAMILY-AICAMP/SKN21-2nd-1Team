@@ -11,7 +11,7 @@ import numpy as np
 
 
 def get_data() -> tuple[pd.DataFrame, pd.Series]:
-    data = pd.read_csv("Bank Customer Churn Prediction.csv")
+    data = pd.read_csv("data.csv")
     features = data.drop(columns=["churn", "customer_id"])
     target = data.churn
     return features, target
