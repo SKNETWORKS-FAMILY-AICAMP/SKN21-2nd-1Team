@@ -2,7 +2,7 @@
 
 ## 프로젝트 개요
 
-머신러닝, 딥러닝 기반 고객의 데이터(신용점수, 연봉, 정년, 은행 잔고 등)를 활용하여 은행 고객 이탈 예측 분석
+고객의 데이터(신용점수, 연봉, 은행 잔고 등)를 활용하여 머신러닝, 딥러닝 기반 은행 고객 이탈 예측 분석
 
 ---
 
@@ -23,6 +23,18 @@
 ---
 
 ## 데이터셋 상세 설명
+- customer_id: 계좌 id
+- credit_score: 신용 점수
+- country: 거주 도시
+- gender: 성별
+- age: 나이
+- tenure: 계좌 보유 기간(단위: 년)
+- balance: 계좌 잔고
+- products_number: 보유 상품 갯수
+- credit_card: 신용카드 보유 여부
+- active_member: 활성 고객 여부
+- estimated_salary: 연봉 정보 (추정)
+- churn: 이탈 여부
 
 ---
 
@@ -43,7 +55,7 @@
 ---
 
 ## 📊 Exploratory Data Analysis (EDA)
-
+![ne_eun_EDA](./ne_eun/eda.png)
 추후 업데이트 예정....
 
 ### Histogram
