@@ -11,7 +11,7 @@ import numpy as np
 
 
 def get_data() -> tuple[pd.DataFrame, pd.Series]:
-    data = pd.read_csv("data.csv")
+    data = pd.read_csv("assets/data.csv")
     features = data.drop(columns=["churn", "customer_id"])
     target = data.churn
     return features, target
@@ -32,7 +32,7 @@ def create_features(features: pd.DataFrame) -> pd.DataFrame:
     return features
 
 
-def get_encoded_data(features: pd.DataFrame, target: pd.Series) -> tuple:
+def get_preprocessor(features: pd.DataFrame, target: pd.Series) -> tuple:
     preprocessor = ColumnTransformer(
         transformers=[
             ("onehot", OneHotEncoder(handle_unknown="ignore"), ["country"]),
@@ -46,15 +46,12 @@ def get_encoded_data(features: pd.DataFrame, target: pd.Series) -> tuple:
                 OneHotEncoder(handle_unknown="ignore"),
                 ["risk_age_rank"],
             ),
-            ("scale", StandardScaler(), ["estimated_salary", "balance"]),
+            # ("scale", StandardScaler(), ["estimated_salary", "balance"]),
         ],
         remainder="passthrough",
     )
-    encoded_features = preprocessor.fit_transform(features)
-    encoded_features = pd.DataFrame(
-        np.array(encoded_features), columns=preprocessor.get_feature_names_out()
-    )
-    return encoded_features, target
+
+    return preprocessor
 
 
 def split_data(encoded_features, target):
