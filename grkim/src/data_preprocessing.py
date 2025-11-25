@@ -81,6 +81,8 @@ class Preprocessing:
         # self.gender_encoder.fit(df['gender'])
         # self.country_encoder.fit(df['country'])
 
+        return self
+
 
     def transform(self, df):
         df = df.copy()
