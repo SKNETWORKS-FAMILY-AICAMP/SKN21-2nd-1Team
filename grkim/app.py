@@ -31,7 +31,7 @@ def load_data() -> pd.DataFrame:
 @st.cache_resource(show_spinner=False)
 def load_model():
     model_dir = BASE_DIR / "result"
-    name = "LightGBM"
+    name = "XGBoost"
     model_path = model_dir / f"{name}.pkl"
     if model_path.exists():
         with open(model_path, "rb") as f:
@@ -172,7 +172,7 @@ def main():
     df = load_data()
     model_name, model = load_model()
     if model is None:
-        st.error("result 폴더에 학습된 모델(.pkl)을 넣어주세요. (예: LightGBM.pkl)")
+        st.error(f"result 폴더에 학습된 모델(.pkl)을 넣어주세요. (예: {model_name}.pkl)")
         return
 
     X = df.drop(columns=["churn"], errors="ignore")
@@ -206,7 +206,7 @@ def main():
             help="임계값을 높이면 보수적으로 이탈을 예측하며, 낮추면 더 많은 이탈 위험을 포착합니다.",
         )
         st.caption(f"적용 중인 모델: {model_name}")
-        st.info("성능 지표와 그래프는 저장된 `LightGBM.pkl` 모델을 그대로 불러와 계산합니다.  \n" \
+        st.info("성능 지표와 그래프는 저장된 `XGBoost.pkl` 모델을 그대로 불러와 계산합니다.  \n" \
                 "**이탈 고객을 놓치지 않는 것**이 최우선이라 Recall을 약 0.8까지 높이는 데 집중했고,  \n" \
                 "Precision은 예측 정확도를 고려해 0.5 아래로 떨어지지 않도록 설정했습니다.")
 

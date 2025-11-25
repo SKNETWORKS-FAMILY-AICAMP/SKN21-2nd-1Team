@@ -61,9 +61,9 @@ class MainModel:
         X_test = self.processing.transform(X_test)
         
         if only_predict:
-            with open("./result/LightGBM.pkl", "rb") as f:
+            with open("./result/XGBoost.pkl", "rb") as f:
                 gbm_model = pickle.load(f)
-            best_models = {"LightGBM":gbm_model}
+            best_models = {"XGBoost":gbm_model}
         else: 
             # train ============================
             best_models = self.train_model.fit(X_train, y_train)
