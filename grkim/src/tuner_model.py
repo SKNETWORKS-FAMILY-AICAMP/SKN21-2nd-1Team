@@ -20,6 +20,7 @@ class MultiModelTuner:
         for name, (model, param_space) in self.models_with_params.items():
             print(f"▶ Tuning {name} ...")
 
+            # 오히려 성능 떨어짐. 
             # search = GridSearchCV(
             #     estimator=model,
             #     param_grid=param_space,

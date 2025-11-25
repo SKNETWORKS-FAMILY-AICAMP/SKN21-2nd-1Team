@@ -4,14 +4,13 @@ import pickle
 
 from sklearn.metrics import confusion_matrix
 
-from tuner_model import MultiModelTuner
-
 import sys
 from pathlib import Path
 # Add project root to path
 project_root = Path.cwd()  # parent of notebooks/
 sys.path.append(str(project_root))
 
+from src.tuner_model import MultiModelTuner
 from util import utils
 
 class TrainModel:
