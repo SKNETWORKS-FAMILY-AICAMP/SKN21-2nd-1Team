@@ -32,7 +32,7 @@ def create_features(features: pd.DataFrame) -> pd.DataFrame:
     return features
 
 
-def get_preprocessor(features: pd.DataFrame, target: pd.Series) -> tuple:
+def get_preprocessor(features: pd.DataFrame, target: pd.Series) -> ColumnTransformer:
     preprocessor = ColumnTransformer(
         transformers=[
             ("onehot", OneHotEncoder(handle_unknown="ignore"), ["country"]),
