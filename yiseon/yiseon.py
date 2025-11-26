@@ -21,7 +21,7 @@ st.markdown(
         }
     </style>
     <div class="header">
-        <h1 style='margin: 0;'>은행 이탈고객 예측 모델 리포트</h1>
+        <h1 style='margin: 0;'>은행 이탈고객 예측 모델 리포트 - 장이선</h1>
     </div>
     """,
     unsafe_allow_html=True,
