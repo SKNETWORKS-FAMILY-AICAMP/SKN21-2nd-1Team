@@ -9,7 +9,6 @@ print("base directory:", base_dir)
 
 def home_page():
 
-    # st.image("./images/bank_churn.png", output_format="auto", use_column_width=None, clamp=False, channels="RGB")
     img = Image.open(base_dir / "images" / "bank_churn.png")
     st.image(img, output_format="auto", width='stretch')
 
@@ -57,8 +56,8 @@ def home_page():
     st.markdown("- LightGBM")
     st.markdown("- CatBoost")
 
-    st.markdown("각 모델의 하이퍼파라미터 튜닝을 위해 Randomized search CV를 적용하였고 "
-                "시계열 모델의 교차 검증을 위해 Time series cv를 5로 적용함")
+    st.markdown("각 모델의 하이퍼파라미터 튜닝은 Randomized search CV로 설정하였고 "
+                "시계열 모델의 교차 검증을 위해 Time series cv를 적용하였음")
 
     st.markdown("---")
     st.markdown("### 분석결과")
@@ -66,7 +65,7 @@ def home_page():
     fig_csv = base_dir / "figure_results.csv"
     csv_results = pd.read_csv(fig_csv)
     st.dataframe(csv_results)
-    st.markdown("ROC-AUC 기준으로 cat Boost가 제일 점수가 높으며 이를 검증하기 위해 이탈율과 고객의 데이터간 상관관계가 중요함")
+    st.markdown("Accuracy, ROC-AUC 기준으로 **XGBoost**, **cat Boost**, **LightGBM**이 점수가 높은 편이며 이를 검증하기 위해 이탈율과 고객의 데이터간 상관관계가 중요함")
     st.markdown("모델이 데이터를 학습하는데 있어서 예측에 중요한 변수들이 있으며 이에 대한 **Feature importance**는 아래와 같음")
 
     fi_image = base_dir / "images" / "feature_importance.png"
@@ -79,12 +78,16 @@ def home_page():
     st.markdown("각 feature들이 얼마나 예측에 기여했는지 알아보기 위해 **Shap**(SHapley Addictive exPlanations) value를 추출하였으며 "
                 "XGBoost와 LightGBM에서 1위가 **product_number**, 2위가 **age**의 기여도가 도출되었고 반대로 CatBoost는 그와 상반된 우선순위로 확인됨")
 
-    rac_image = base_dir / "images" / "roc-auc_curve.png"
-    st.image(Image.open(rac_image))
-    st.markdown("5개의 모델에 대한 **ROC-AUC curve**는 상기 이미지와 같으며 Decision Tree의 기반 및 앙상블 모델인 XGBoost, CatBoost, LightGBM이"
-                "높으며 그 중 **CatBoost**가 높은 성능을 보이고 있음")
+    prc_image = base_dir / "images" / "PRC.png"
+    auc_image = base_dir / "images" / "auc_curve.png"
+    col1, col2 = st.columns(2)
+    with col1:
+        st.image(Image.open(prc_image))
+    with col2:
+        st.image(Image.open(auc_image))
 
-
+    st.markdown("5개의 모델에 대한 AUC curve는 Decision Tree의 기반 및 앙상블 모델인 XGBoost, CatBoost이 높고 PRC curve는 "
+                "XGBoost가 수치가 높으며 높은 성능을 보이는 모델은 **XGBoost**로 확인되었음")
 
 
 
