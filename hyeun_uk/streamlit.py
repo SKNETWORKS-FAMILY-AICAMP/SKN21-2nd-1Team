@@ -37,17 +37,28 @@ feature_df = pd.DataFrame(
             "연봉 대비 계좌 잔고(balance_to_salary)",
             "연령 가중치(risk_age_rank)",
             "연령별 계좌보유기간 (tenure_to_age)",
+            "계좌잔고 로그화(log_balance)",
+            "연봉 로그화(log_salary)",
+            "연봉 그룹화(salary_group)",
+            "계좌잔고 이상치 제거(balance_clipped)",
+
         ],
-        "특성 생성 방법": [
-            "신용 점수 / 연령",
-            "잔고 / 연봉",
-            "연령대 구간화",
-            "계좌보유 기간 / 연령",
-        ],
+        "특성 생성 방법": ["신용 점수 / 연령",
+                           "잔고 / 연봉",
+                           "연령대 구간화",
+                           "계좌보유 기간 / 연령",
+                           "log(1+계좌잔고) ",
+                           "log(1+연봉)",
+                           "연봉별 구간화",
+                           "계좌잔고 IQR"],
         "비고": [
             "",
             "",
             "20대 이하, 20대, 30대, 40대, 50대, 60대 이상",
+            "",
+            "",
+            "",
+            "연봉별 5개의 구간화",
             "",
         ],
     },
@@ -58,14 +69,46 @@ st.divider()
 
 st.subheader("Preprocessing")
 # st.markdown(":orange-badge[XGBoost, LightGBM 모델 특성상 스케일링을 적용하지 않음]")
-encoding_df = pd.DataFrame(
+encoding_df1 = pd.DataFrame(
     {
-        "특성": ["도시(country)", "성별(sex)", "연령 가중치(risk_age_rank)"],
-        "인코딩 방법": ["원핫 인코딩", "원핫 인코딩", "원핫 인코딩"],
-        "비고": ["", "남성을 1로 가중치를 부여 하고자 함", ""],
+        "특성": ["도시(country)",
+                 "성별(sex)",
+                 "연령 가중치(risk_age_rank)",],
+        "인코딩 방법": ["OneHotEncoder",
+                        "OneHotEncoder",
+                        "OneHotEncoder",],
+        "비고": ["", "", "",],
     }
 )
-st.dataframe(encoding_df, hide_index=True)
+
+
+encoding_df2 = pd.DataFrame(
+    {
+        "특성" : ["신용점수(credit_score)",
+                  "계좌보유기간(tenure)",
+                  "계좌잔고(balance)",
+                  "보유상품개수(products_number)",
+                  "연봉정보(estimated_salary)",
+                  "그 외(etc)",],
+        "스케일링" : ["StandardScaler",
+                     "StandardScaler",
+                     "StandardScaler",
+                     "StandardScaler",
+                     "StandardScaler",
+                     "StandardScaler",
+        ],
+        "비고" : ["",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",],
+    }
+)
+
+
+st.dataframe(encoding_df1, hide_index=True)
+st.dataframe(encoding_df2, hide_index=True)
 # st.markdown(
 #     """
 #         <h4 style="font-size: 1.4rem">Data Splitting Strategy</h4>
@@ -81,60 +124,43 @@ st.subheader("Models")
 st.markdown(
     """
         <ul>
-            <li>앙상블(RandomForest + XGBoost) 두 모델의 평균치로 최종 예측</li>
+            <li>XGBoost 모델을 최종 모델로 선정하여 하이퍼 파라미터 조정 후 최종 예측</li>
             <li>Target Data(이탈/유지) 불균형을 잡기위해 class 가중치를 다르게 설정</li>
         </ul>
     """,
     unsafe_allow_html=True,
 )
 
-col1, col2 = st.columns(2)
-with col1:
-    st.markdown(
-        """
-        <style>
-            .model_box {
-                padding: 20px;
-                border: 1px solid #666;
-                border-radius: 20px;
-                margin-bottom: 40px;
-            }
-        </style>
-        <div class="model_box">
-            <h4>LightGBM의 장점</h4>
-            <ul>
-                <li>빠른 학습 속도</li>
-                <li>과적합 제어 기능 탑재</li>
-                <li>결측치 자동 처리</li>
-            </ul>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
 
-with col2:
-    st.markdown(
-        """
-        <div class="model_box">
-            <h4>XGBoost의 장점</h4>
-            <ul>
-                <li>과적합에 강함</li>
-                <li>해석력이 좋음</li>
-                <li>결측치, 이상치에 강함</li>
-            </ul>
-        </div>
-        """,
-        unsafe_allow_html=True,
+
+st.markdown(
+    """
+    <style>
+        .model_box {
+            padding: 20px;
+            border: 1px solid #666;
+            border-radius: 20px;
+            margin-bottom: 40px;
+        }
+    </style>
+    <div class="model_box">
+        <h4>XGBoost의 장점</h4>
+        <ul>
+            <li>빠른 학습 속도</li>
+            <li>과적합 제어 기능 탑재</li>
+            <li>결측치 자동 처리</li>
+            <li>Feature 중요도 확인 쉬움</li>
+            <li>희소 데이터 처리 최적화</li>
+            <li>불균형 데이터도 튜닝 쉬움</li>
+        </ul>
+    </div>
+    """,
+    unsafe_allow_html=True,
     )
 
 parameter_df = pd.DataFrame(
     {
         "모델": [
-            "RandomForest",
-            "RandomForest",
-            "RandomForest",
-            "RandomForest",
-            "RandomForest",
             "XGBoost",
             "XGBoost",
             "XGBoost",
@@ -145,11 +171,6 @@ parameter_df = pd.DataFrame(
             "XGBoost",
         ],
         "파라미터": [
-            "random_state",
-            "n_estimators",
-            "max_depth",
-            "n_jobs",
-            "class_weight",
             "n_estimators",
             "max_depth",
             "learning_rate",
@@ -160,11 +181,6 @@ parameter_df = pd.DataFrame(
             "tree_method",
         ],
         "사용한 값": [
-            "42",
-            "100",
-            "10",
-            "-1",
-            "balanced",
             "400",
             "4",
             "0.05",

@@ -11,7 +11,7 @@ class ChartMaker:
 
         self.df = df.copy()
         self.target = target
-        self.colors = ["#10f136", "#f2fa10"]
+        self.colors = ["#0f18b5", "#9ea30a"]
 
 
 
