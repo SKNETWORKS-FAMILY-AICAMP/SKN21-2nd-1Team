@@ -21,7 +21,7 @@ st.markdown(
         }
     </style>
     <div class="header">
-        <h1 style='margin: 0;'>은행 이탈고객 예측 모델 리포트</h1>
+        <h1 style='margin: 0;'>은행 이탈고객 예측 모델 리포트 - 장이선</h1>
     </div>
     """,
     unsafe_allow_html=True,
@@ -54,14 +54,15 @@ feature_df = pd.DataFrame(
             "credit_score × active_member",
             "balance × active_member",
         ],
-        "비고": ["연봉 대비 잔고 수준",
-    "신용점수 대비 잔고 수준",
-    "잔고 여부",
-    "3개 이상 상품 보유 여부",
-    "7년 이상 거래 여부",
-    "신용점수 × 활동성 지표",
-    "잔고 × 활동성 지표",
-    ],
+        "비고": [
+            "연봉 대비 잔고 수준",
+            "신용점수 대비 잔고 수준",
+            "잔고 여부",
+            "3개 이상 상품 보유 여부",
+            "7년 이상 거래 여부",
+            "신용점수 × 활동성 지표",
+            "잔고 × 활동성 지표",
+        ],
     },
 )
 st.dataframe(feature_df, hide_index=True)
@@ -73,14 +74,20 @@ st.divider()
 # ============================
 
 st.subheader("Preprocessing")
-st.markdown(":orange-badge[✔️ SVM 및 트리 기반 모델을 함께 사용하기 위해 모든 수치형 변수에 StandardScaler 적용]")
+st.markdown(
+    ":orange-badge[✔️ SVM 및 트리 기반 모델을 함께 사용하기 위해 모든 수치형 변수에 StandardScaler 적용]"
+)
 encoding_df = pd.DataFrame(
     {
-        "특성": ["성별(Gender)",
-            "국가(Country)"],
-        "인코딩 방법": ["OHE (pd.get_dummies, drop_first=True)","OHE(pd.get_dummies, drop_first=True)"],
-        "비고": ["예: gender_Male (여성=0, 남성=1)",
-            "예: country_Germany, country_Spain (France는 기준 범주)"],
+        "특성": ["성별(Gender)", "국가(Country)"],
+        "인코딩 방법": [
+            "OHE (pd.get_dummies, drop_first=True)",
+            "OHE(pd.get_dummies, drop_first=True)",
+        ],
+        "비고": [
+            "예: gender_Male (여성=0, 남성=1)",
+            "예: country_Germany, country_Spain (France는 기준 범주)",
+        ],
     }
 )
 st.dataframe(encoding_df, hide_index=True)
@@ -199,8 +206,12 @@ for model, subdf in parameter_df.groupby("모델"):
         if first:
             html += f'<td rowspan="{rowspan}" style="border:1px solid #ddd; padding:6px; text-align:center;">{model}</td>'
             first = False
-        html += f'<td style="border:1px solid #ddd; padding:6px;">{row["파라미터"]}</td>'
-        html += f'<td style="border:1px solid #ddd; padding:6px;">{row["사용한 값"]}</td>'
+        html += (
+            f'<td style="border:1px solid #ddd; padding:6px;">{row["파라미터"]}</td>'
+        )
+        html += (
+            f'<td style="border:1px solid #ddd; padding:6px;">{row["사용한 값"]}</td>'
+        )
         html += "</tr>\n"
 
 html += """

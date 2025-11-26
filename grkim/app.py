@@ -1,5 +1,4 @@
 import pickle
-from pathlib import Path
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -16,21 +15,27 @@ from sklearn.metrics import (
     roc_curve,
 )
 
+import sys
+from pathlib import Path
+# Add project root to path
+project_root = Path(__file__).resolve().parent  # parent of notebooks/
+sys.path.append(str(project_root))
+print("project_root : ", project_root)
+
 from src.data_preprocessing import Preprocessing
 
-BASE_DIR = Path(__file__).resolve().parent
 st.set_page_config(page_title="은행 고객 이탈률 예측", layout="wide")
 
 
 @st.cache_data(show_spinner=False)
 def load_data() -> pd.DataFrame:
-    data_path = BASE_DIR / "data" / "bank_customer_churn_prediction.csv"
+    data_path = project_root / "data" / "bank_customer_churn_prediction.csv"
     return pd.read_csv(data_path)
 
 
 @st.cache_resource(show_spinner=False)
 def load_model():
-    model_dir = BASE_DIR / "result"
+    model_dir = project_root / "result"
     name = "XGBoost"
     model_path = model_dir / f"{name}.pkl"
     if model_path.exists():
