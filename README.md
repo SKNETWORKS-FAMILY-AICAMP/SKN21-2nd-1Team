@@ -29,11 +29,8 @@ ___
 
 | 이름 | 담당업무 |
 |------|-------------|
-| 정덕규 |   |
-| 김가람 |   |
-| 강현욱 |   |
-| 박내은 |   |
-| 장이선 |   |
+| 정덕규, 강현욱, 김가람, 박내은, 장이선 | 데이터 분석, 데이터 전처리, 모델 선정, 하이퍼 파라미터 튜닝, 데이터 후 처리, 최종 리포트 페이지 제작  |
+
 
 
 
@@ -59,11 +56,6 @@ ___
 ![ne_eun_EDA](./ne_eun/assets/eda.png)
 ![yiseon_EDA](./yiseon/EDA_4grid2.png)
 ___
-## 최종 선정 모델
-
-추후 업데이트 예정....
-
----
 
 ## ⚙️ Tech Stack  
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) ![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white) ![Jupyter](https://img.shields.io/badge/Jupyter-F37626?style=for-the-badge&logo=jupyter&logoColor=white) ![Scikit-learn](https://img.shields.io/badge/Scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white) ![RandomForest](https://img.shields.io/badge/RandomForest-228B22?style=for-the-badge&logo=scikitlearn&logoColor=white) ![Matplotlib](https://img.shields.io/badge/Matplotlib-003049?style=for-the-badge&logo=plotly&logoColor=white) ![Seaborn](https://img.shields.io/badge/Seaborn-3776AB?style=for-the-badge&logo=python&logoColor=white) ![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white) ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white) ![Discord](https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)
