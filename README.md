@@ -61,10 +61,6 @@ ___
 ![yiseon_EDA](./yiseon/age_distribution.png)
 ![yiseon_EDA](./yiseon/country-wise.png)
 ![yiseon_EDA](./yiseon/gender-wise.png)
-![yiseon_EDA](./yiseon/heatmap.png)
-![yiseon_EDA](./yiseon/age%20distribution.png)
-![yiseon_EDA](./yiseon/country-wise.png)
-![yiseon_EDA](./yiseon/gender-wise.png)
 ___
 ## 최종 선정 모델
 
