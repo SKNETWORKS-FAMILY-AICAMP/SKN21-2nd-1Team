@@ -166,7 +166,7 @@ def correlation_heatmap(df: pd.DataFrame):
     corr = df_num.corr(numeric_only=True)
     fig, ax = plt.subplots(figsize=(6, 4))
     sns.heatmap(corr, annot=False, cmap="Blues", ax=ax)
-    ax.set_title("컬럼 상관관계 히트맵")
+    ax.set_title("Feature 상관관계 히트맵")
     return fig
 
 
@@ -212,8 +212,8 @@ def main():
         )
         st.caption(f"적용 중인 모델: {model_name}")
         st.info("성능 지표와 그래프는 저장된 `XGBoost.pkl` 모델을 그대로 불러와 계산합니다.  \n" \
-                "**이탈 고객을 놓치지 않는 것**이 최우선이라 Recall을 약 0.8까지 높이는 데 집중했고,  \n" \
-                "Precision은 예측 정확도를 고려해 0.5 아래로 떨어지지 않도록 설정했습니다.")
+                "✨ **이탈 고객을 놓치지 않는 것**이 최우선이라 Recall을 약 0.8까지 높이는 데 집중했고,  \n" \
+                "☑️ Precision은 예측 정확도를 고려해 0.5 아래로 떨어지지 않도록 설정했습니다.")
 
         metrics_df, prob_fig, roc_fig = evaluate_models(
             y_test, proba, model_name, threshold
@@ -319,12 +319,25 @@ def main():
             st.pyplot(churn_distribution_chart(df))
         with col2:
             st.pyplot(churn_by_age_chart(df))
+
+        # Processing
+        st.subheader("Preprocessing")
+        st.markdown("- Drop Feature **'customer_id'**")
+        encoding_df = pd.DataFrame(
+            {
+                "Feature": ["gender, country", "age", "balance", "tenure, credit_score, estimated_salary, products_number"],
+                "인코딩 방법": ["OneHotEncoder", "LabelEncoder", "RobustScaler", "StandardScaler"],
+                "비고": ["기존 gender, country Feature 제거", "30대, 40대, 50대, 60대 age_group Feature 생성 - 기존 age Feature 제거", "비정규적+극단값이 많은 데이터 - 중앙값이 0이 되도록 IQR(75%-25%)나눠서 표준화", ""],
+            }
+        )
+        st.dataframe(encoding_df, hide_index=True)
+
         st.divider()
         st.subheader("컬럼 상관관계")
         st.pyplot(correlation_heatmap(df))
         st.info(
             "원본 Feature 간 상관관계가 낮아,  \n"
-            "데이터 전처리 단계에서 의미 있는 칼럼들(각 모델들의 feature_importances)의 조합으로  \n"
+            "데이터 전처리 단계에서 의미 있는 Feature들(각 모델들의 feature_importances)의 조합으로  \n"
             "상호작용 피처를 추가해 모델이 관계를 더 잘 포착하도록 했습니다."
         )
         st.subheader("Feature Importance 요약")
@@ -335,10 +348,11 @@ def main():
                 ["XGBoost", "age_group, ✅ products_number, active_member, age, country_Germany"],
                 ["LightGBM", "✅ estimated_salary, credit_score, balance, age, tenure"],
             ],
-            columns=["모델", "중요 피처 (상위 5개)"],
+            columns=["모델", "중요 Feature (상위 5개)"],
         )
         st.table(fi_table)
-        st.subheader("추가한 상호작용 피처")
+        st.subheader("추가한 상호작용 Feature")
+        st.text("📈 Feature들의 조합을 통해서 Recall은 유지되면서 Precision을 높일 수 있었습니다.")
         interaction_table = pd.DataFrame(
             [
                 ["age_x_active", "나이 × 활성 고객 여부"],
@@ -347,7 +361,7 @@ def main():
                 ["estimated_x_age", "예상 연봉 × 나이"],
                 ["estimated_x_active", "예상 연봉 × 활성 고객 여부"],
             ],
-            columns=["상호작용 피처", "설명"],
+            columns=["상호작용 Feature", "설명"],
         )
         st.table(interaction_table)
 
