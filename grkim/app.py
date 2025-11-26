@@ -1,7 +1,6 @@
 import pickle
 
 import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 import seaborn as sns
 import streamlit as st
@@ -171,35 +170,6 @@ def correlation_heatmap(df: pd.DataFrame):
     return fig
 
 
-def balance_scaling_fig(df: pd.DataFrame, preprocessor: Preprocessing):
-    raw = df["balance"].dropna()
-    robust_scaled = preprocessor.robust_scaler.transform(raw.to_frame()).ravel()
-
-    # age_group은 preprocessor와 동일한 bin/label 로직을 사용
-    age_group_series = pd.cut(
-        df["age"],
-        bins=preprocessor.age_bins,
-        labels=preprocessor.age_labels
-    )
-
-    fig, axes = plt.subplots(1, 2, figsize=(10, 3))
-
-    axes[0].hist(robust_scaled, bins=30, color="#6baed6", edgecolor="black")
-    axes[0].axvline(np.median(robust_scaled), color="red", linestyle="--", label="중앙값")
-    axes[0].set_title("RobustScaler 후 (balance)")
-    axes[0].set_xlabel("(balance - median) / IQR")
-    axes[0].legend()
-
-    age_counts = age_group_series.value_counts().reindex(preprocessor.age_labels)
-    axes[1].bar(age_counts.index.astype(str), age_counts.values, color="#9ecae1", edgecolor="black")
-    axes[1].set_title("age_group 분포")
-    axes[1].set_ylabel("고객 수")
-    axes[1].set_xlabel("age_group")
-
-    fig.tight_layout()
-    return fig
-
-
 def main():
     st.title("은행 고객 이탈률 예측 대시보드")
     st.caption("은행 고객의 이탈 가능성을 빠르게 확인하고, 모델 분포와 결과를 함께 확인하세요.")
@@ -243,7 +213,7 @@ def main():
         st.caption(f"적용 중인 모델: {model_name}")
         st.info("성능 지표와 그래프는 저장된 `XGBoost.pkl` 모델을 그대로 불러와 계산합니다.  \n" \
                 "✨ **이탈 고객을 놓치지 않는 것**이 최우선이라 Recall을 약 0.8까지 높이는 데 집중했고,  \n" \
-                "➕ Precision은 예측 정확도를 고려해 0.5 아래로 떨어지지 않도록 설정했습니다.")
+                "☑️ Precision은 예측 정확도를 고려해 0.5 아래로 떨어지지 않도록 설정했습니다.")
 
         metrics_df, prob_fig, roc_fig = evaluate_models(
             y_test, proba, model_name, threshold
@@ -349,7 +319,7 @@ def main():
             st.pyplot(churn_distribution_chart(df))
         with col2:
             st.pyplot(churn_by_age_chart(df))
-        
+
         # Processing
         st.subheader("Preprocessing")
         st.markdown("- Drop Feature **'customer_id'**")
@@ -361,12 +331,9 @@ def main():
             }
         )
         st.dataframe(encoding_df, hide_index=True)
-        
-        # balance
-        # st.pyplot(balance_scaling_fig(df, preprocessor))
 
         st.divider()
-        st.subheader("Feature 상관관계")
+        st.subheader("컬럼 상관관계")
         st.pyplot(correlation_heatmap(df))
         st.info(
             "원본 Feature 간 상관관계가 낮아,  \n"
@@ -384,7 +351,7 @@ def main():
             columns=["모델", "중요 Feature (상위 5개)"],
         )
         st.table(fi_table)
-        st.subheader("추가한 상호작용 피처")
+        st.subheader("추가한 상호작용 Feature")
         st.text("📈 Feature들의 조합을 통해서 Recall은 유지되면서 Precision을 높일 수 있었습니다.")
         interaction_table = pd.DataFrame(
             [
@@ -394,7 +361,7 @@ def main():
                 ["estimated_x_age", "예상 연봉 × 나이"],
                 ["estimated_x_active", "예상 연봉 × 활성 고객 여부"],
             ],
-            columns=["상호작용 피처", "설명"],
+            columns=["상호작용 Feature", "설명"],
         )
         st.table(interaction_table)
 

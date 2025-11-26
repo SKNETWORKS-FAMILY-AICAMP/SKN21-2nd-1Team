@@ -29,11 +29,8 @@ ___
 
 | 이름 | 담당업무 |
 |------|-------------|
-| 정덕규 |   |
-| 김가람 |   |
-| 강현욱 |   |
-| 박내은 |   |
-| 장이선 |   |
+| 정덕규, 강현욱, 김가람, 박내은, 장이선 | 데이터 분석, 데이터 전처리, 모델 선정, 하이퍼 파라미터 튜닝, 데이터 후 처리, 최종 리포트 페이지 제작  |
+
 
 
 
@@ -57,13 +54,8 @@ ___
 
 ## 📊 Exploratory Data Analysis (EDA)
 ![ne_eun_EDA](./ne_eun/assets/eda.png)
-![yiseon_EDA](./yiseon/EDA_4grid.png)
+![yiseon_EDA](./yiseon/EDA_4grid2.png)
 ___
-## 최종 선정 모델
-
-추후 업데이트 예정....
-
----
 
 ## ⚙️ Tech Stack  
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) ![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white) ![Jupyter](https://img.shields.io/badge/Jupyter-F37626?style=for-the-badge&logo=jupyter&logoColor=white) ![Scikit-learn](https://img.shields.io/badge/Scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white) ![RandomForest](https://img.shields.io/badge/RandomForest-228B22?style=for-the-badge&logo=scikitlearn&logoColor=white) ![Matplotlib](https://img.shields.io/badge/Matplotlib-003049?style=for-the-badge&logo=plotly&logoColor=white) ![Seaborn](https://img.shields.io/badge/Seaborn-3776AB?style=for-the-badge&logo=python&logoColor=white) ![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white) ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white) ![Discord](https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)
@@ -77,7 +69,7 @@ ___
 | 이름 | 회고                                                                                                                                                                                       |
 |------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | 정덕규 | 데이터의 전처리부터 하이퍼파라미터 튜닝, 원하는 모델을 설정하여 예측하기까지 일련의 과정을 거치면서 고객의 입장에서 어떠한 요구가 필요한지 체감하게 되었습니다. 다양한 신경망을 학습하여 결과를 예측하고 싶었지만 기본적인 머신러닝 프로젝트를 경험하면서 어떤 모델을 수립해야 원하는 값을 도출할 수 있는지 체득할 수 있었습니다. :D |
-| 김가람 |                                                                                                                                                                                          |
+| 김가람 | 그래프 시각화가 분석·평가를 판단하는데 얼마나 중요한지 체감하였고, 이탈률 성능을 체크하면서 Recall과 Precision의 관계를 제대로 이해할 수 있었습니다. 팀원마다 데이터 전처리 방법, 모델 선정 방법, 하이퍼파라미터 튜닝 방법등이 모두 달라서 부족한 부분들을 서로 배우는 시간을 가질 수 있었습니다. |
 | 강현욱 | 전처리, EDA, 임계값 조정의 영향력을 직접 검증하며, 모델 성능 최적화 과정의 핵심 기술들을 체계적으로 이해한 의미 있는 프로젝트였습니다.                                                                                                          |
 | 박내은 | 해당 프로젝트를 진행하면서 Feature enginering의 중요성도 깨달았고, EDA의 분석으로 시각화의 목적도 이해되었습니다. 다양한 모델의 하이퍼 파라미터를 찾아보면서 모델의 구조에 전보단 가까워 진 것 같...아요(아마도) 모든 과정을 진행해 볼 수 있어서 많은 경험이 된 프로젝트 였습니다. :)              |
 | 장이선 | 모델 전처리부터 EDA, Feature Engineering, 모델 선정과 성능 최적화까지 전 과정을 직접 해보면서, 그동안 수업을 들을 때는 몰랐던 흐름과 원리를 몸으로 이해할 수 있었습니다! 단순히 코드를 실행하는 수준이 아니라, 어떤 단계에서 내가 부족했는지 스스로 깨닫게 된 점이 특히 의미 있었다고 생각합니다. 처음부터 끝까지 시행착오를 겪으며 완성해낸 경험이 나를 한 단계 성장시켰다는 확신이 들었고, 그 과정 자체가 무척 뿌듯하게 느껴집니다!!! （￣︶￣）↗　 |
