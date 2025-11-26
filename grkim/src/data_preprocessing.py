@@ -52,7 +52,6 @@ class Preprocessing:
         
         self.standard_scaler = StandardScaler()
         self.robust_scaler  = RobustScaler() # or MinMaxScaler, log1p 변환 후 StandardScaler - balance
-        self.balance_standard_scaler = StandardScaler()
         self.onehot_encoder = OneHotEncoder(sparse_output=False) # sparse=False 반환타입 : Numpy array로 받기
         # self.gender_encoder = LabelEncoder()
         # self.country_encoder = LabelEncoder()
@@ -67,8 +66,7 @@ class Preprocessing:
         # 1) 스케일러/인코더 학습
         self.standard_scaler.fit(df[self.numeric_cols])
         self.robust_scaler.fit(df[self.balance_col])
-        self.balance_standard_scaler.fit(df[self.balance_col])
-        
+
         # 2) age_group -> fit LabelEncoder
         age_group_series = pd.cut(
             df['age'],
