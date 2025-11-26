@@ -1,19 +1,17 @@
 import streamlit as st
 from PIL import Image
-import pathlib
+from pathlib import Path
 import pandas as pd
-import os
 
-script_dir = pathlib.Path(__file__).parent
-image_path = "script_dir/images/bank_churn.png"
+base_dir = Path(__file__).resolve().parent
 COLS_PER_ROW = 3
-
+print("base directory:", base_dir)
 
 def home_page():
 
     # st.image("./images/bank_churn.png", output_format="auto", use_column_width=None, clamp=False, channels="RGB")
-    img = Image.open("./images/bank_churn.png")
-    st.image(img, width=600)
+    img = Image.open(base_dir / "images" / "bank_churn.png")
+    st.image(img, output_format="auto", width='stretch')
 
     st.markdown("---")
     st.markdown("# 은행 고객 이탈 예측 분석")
@@ -65,17 +63,24 @@ def home_page():
     st.markdown("---")
     st.markdown("### 분석결과")
 
-    df_read = pd.read_csv("../figure_results.csv")
-    st.dataframe(df_read)
+    fig_csv = base_dir / "figure_results.csv"
+    csv_results = pd.read_csv(fig_csv)
+    st.dataframe(csv_results)
     st.markdown("ROC-AUC 기준으로 cat Boost가 제일 점수가 높으며 이를 검증하기 위해 이탈율과 고객의 데이터간 상관관계가 중요함")
     st.markdown("모델이 데이터를 학습하는데 있어서 예측에 중요한 변수들이 있으며 이에 대한 **Feature importance**는 아래와 같음")
-    st.image(Image.open("./images/feature_importance.png"))
+
+    fi_image = base_dir / "images" / "feature_importance.png"
+    st.image(Image.open(fi_image))
     st.markdown("주요 3개의 모델링(XGBoost, Light GBM, CatBoost) 중에 대다수 age, product_number였으며 XGBoost와 CatBoost는 각각 "
                 "1위가 product_number, 2위가 age였고 LightGBM만 1위가 age로 판단됨. 즉 고객 이탈율에 있어서 **나이**가 우선순위가 높음")
-    st.image(Image.open("./images/shap_value.png"))
+
+    sv_image = base_dir / "images" / "shap_value.png"
+    st.image(Image.open(sv_image))
     st.markdown("각 feature들이 얼마나 예측에 기여했는지 알아보기 위해 **Shap**(SHapley Addictive exPlanations) value를 추출하였으며 "
                 "XGBoost와 LightGBM에서 1위가 **product_number**, 2위가 **age**의 기여도가 도출되었고 반대로 CatBoost는 그와 상반된 우선순위로 확인됨")
-    st.image(Image.open("./images/roc-auc_curve.png"))
+
+    rac_image = base_dir / "images" / "roc-auc_curve.png"
+    st.image(Image.open(rac_image))
     st.markdown("5개의 모델에 대한 **ROC-AUC curve**는 상기 이미지와 같으며 Decision Tree의 기반 및 앙상블 모델인 XGBoost, CatBoost, LightGBM이"
                 "높으며 그 중 **CatBoost**가 높은 성능을 보이고 있음")
 
