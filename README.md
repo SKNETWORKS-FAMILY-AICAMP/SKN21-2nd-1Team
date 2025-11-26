@@ -57,7 +57,7 @@ ___
 
 ## 📊 Exploratory Data Analysis (EDA)
 ![ne_eun_EDA](./ne_eun/assets/eda.png)
-
+![yiseon_EDA](./yiseon/EDA_4grid.png)
 ___
 ## 최종 선정 모델
 
