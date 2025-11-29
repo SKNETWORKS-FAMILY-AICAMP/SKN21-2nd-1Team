@@ -10,7 +10,7 @@ print("base directory:", base_dir)
 def home_page():
 
     img = Image.open(base_dir / "images" / "bank_churn.png")
-    st.image(img, output_format="auto", width='stretch')
+    st.image(img, width=600)
 
     st.markdown("---")
     st.markdown("# 은행 고객 이탈 예측 분석")
@@ -50,11 +50,11 @@ def home_page():
     st.markdown("### 모델 및 하이퍼파라미터 선정")
     st.markdown("모델의 성능 평가를 위해 분류 모델 평가인 F1 score, Accuracy, ROC-AUC 점수 지표를 기준으로 아래와 같은 모델을 선정하였음")
 
-    st.markdown("- Decision Tree")
-    st.markdown("- Random Forest")
-    st.markdown("- XGBoost")
-    st.markdown("- LightGBM")
-    st.markdown("- CatBoost")
+    st.markdown("- Decision Tree: 스무고개하듯이 예/아니오 질문으로 이어가는 학습 방법. 특정 질문에 따라 데이터를 구분하는 결정 트리 모델")
+    st.markdown("- Random Forest: Decision Tree 기반의 무작위성 샘플 추출로 모델을 개별적으로 학습한 뒤 이들을 취합하는 기법")
+    st.markdown("- XGBoost: 경사하강법을 활용하는 Decision tree 기반 앙상블 알고리즘. 분산 시스템에 효과적이며 분류와 회귀 영역에서 뛰어난 성능을 보임.")
+    st.markdown("- LightGBM: tree가 아닌 leaf 기준 분할 방식. 예측 오류를 손실화하여 학습 시간이 짧고 대용량 데이터 처리가 가능함")
+    st.markdown("- CatBoost: 범주형 변수에 특화되어 있는 모델로 one-hot, label encoding 작업할 필요 없이 모델의 입력값으로 넣을 수 있는 장점이 있음.")
 
     st.markdown("각 모델의 하이퍼파라미터 튜닝은 Randomized search CV로 설정하였고 "
                 "시계열 모델의 교차 검증을 위해 Time series cv를 적용하였음")
@@ -82,13 +82,12 @@ def home_page():
     auc_image = base_dir / "images" / "auc_curve.png"
     col1, col2 = st.columns(2)
     with col1:
-        st.image(Image.open(prc_image))
+        st.image(Image.open(prc_image), width=400)
     with col2:
-        st.image(Image.open(auc_image))
+        st.image(Image.open(auc_image), width=400)
 
     st.markdown("5개의 모델에 대한 AUC curve는 Decision Tree의 기반 및 앙상블 모델인 XGBoost, CatBoost이 높고 PRC curve는 "
                 "XGBoost가 수치가 높으며 높은 성능을 보이는 모델은 **XGBoost**로 확인되었음")
-
 
 
     # 하단은 사이드바

@@ -37,9 +37,9 @@ ___
 ---
 
 ## 📈 데이터셋 상세 설명
-- customer_id: 계좌 id
+- customer_id: 고객 계좌번호
 - credit_score: 신용 점수
-- country: 거주 도시
+- country: 거주 국가
 - gender: 성별
 - age: 나이
 - tenure: 계좌 보유 기간(단위: 년)
@@ -47,7 +47,7 @@ ___
 - products_number: 보유 상품 갯수
 - credit_card: 신용카드 보유 여부
 - active_member: 활성 고객 여부
-- estimated_salary: 연봉 정보 (추정)
+- estimated_salary: 추정 연봉
 - churn: 이탈 여부
 #### 📚 출처 [Bank Customer Churn Dataset](https://www.kaggle.com/datasets/gauravtopre/bank-customer-churn-dataset/data)
 ___
@@ -55,6 +55,13 @@ ___
 ## 📊 Exploratory Data Analysis (EDA)
 ![ne_eun_EDA](./ne_eun/assets/eda.png)
 ![yiseon_EDA](./yiseon/EDA_4grid2.png)
+___
+
+## 화면 시연  
+추후 업데이트
+
+
+
 ___
 
 ## ⚙️ Tech Stack  
