@@ -59,7 +59,7 @@ ___
 
 ## 화면 시연  
 ![Final Demo](./Final_model.gif) 
-
+![Model Comparison](./Model_comparison.gif) 
 
 
 ___
