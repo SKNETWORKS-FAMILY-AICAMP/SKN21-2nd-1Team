@@ -58,7 +58,7 @@ ___
 ___
 
 ## 화면 시연  
-/* ![DEMO](./demo.gif) */
+![Final Demo](./Final_model.gif) 
 
 
 
